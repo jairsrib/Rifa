@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/styles.css">
     <title>Rifa</title>
     <style>
         .premio-com-imagem {
@@ -22,7 +22,7 @@
 
 <body>
     <form method="post" enctype="multipart/form-data">
-        <h1>Informe a quantidade de bilhetes a ser gerados</h1>
+        <h1 class="titulo-principal" >Crie sua Rifa</h1>
         <label for="quantidade">Quantidade de bilhetes:</label>
         <input type="number" id="quantidade" name="quantidade" min="1" required>
         <br>
@@ -30,7 +30,7 @@
         <input type="text" id="nome" name="nome" required>
         <br>
         <label for="premios">Prêmios da Rifa</label>
-
+        <br>
         <!-- Prêmio 1 -->
         <div class="messageBox">
             <div class="fileUploadWrapper">
@@ -52,25 +52,11 @@
         <!-- Prêmio 2 -->
         <div class="messageBox">
             <div class="fileUploadWrapper">
-                <label for="file">
+                <label for="imgpremio2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
-                        <circle
-                            stroke-width="20"
-                            stroke="#6c6c6c"
-                            fill="none"
-                            r="158.5"
-                            cy="168.5"
-                            cx="168.5"></circle>
-                        <path
-                            stroke-linecap="round"
-                            stroke-width="25"
-                            stroke="#6c6c6c"
-                            d="M167.759 79V259"></path>
-                        <path
-                            stroke-linecap="round"
-                            stroke-width="25"
-                            stroke="#6c6c6c"
-                            d="M79 167.138H259"></path>
+                        <circle stroke-width="20" stroke="#6c6c6c" fill="none" r="158.5" cy="168.5" cx="168.5"></circle>
+                        <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M167.759 79V259"></path>
+                        <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M79 167.138H259"></path>
                     </svg> <span class="tooltip">Add an image</span>
                 </label>
                 <input type="file" id="imgpremio2" name="imgpremio2" />
@@ -83,25 +69,11 @@
         <!-- Prêmio 3 -->
         <div class="messageBox">
             <div class="fileUploadWrapper">
-                <label for="file">
+                <label for="imgpremio3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
-                        <circle
-                            stroke-width="20"
-                            stroke="#6c6c6c"
-                            fill="none"
-                            r="158.5"
-                            cy="168.5"
-                            cx="168.5"></circle>
-                        <path
-                            stroke-linecap="round"
-                            stroke-width="25"
-                            stroke="#6c6c6c"
-                            d="M167.759 79V259"></path>
-                        <path
-                            stroke-linecap="round"
-                            stroke-width="25"
-                            stroke="#6c6c6c"
-                            d="M79 167.138H259"></path>
+                        <circle stroke-width="20" stroke="#6c6c6c" fill="none" r="158.5" cy="168.5" cx="168.5"></circle>
+                        <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M167.759 79V259"></path>
+                        <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M79 167.138H259"></path>
                     </svg>
                     <span class="tooltip">Add an image</span>
                 </label>
@@ -115,9 +87,10 @@
         <input type="number" id="valor" name="valor" min="0.01" step="0.01" required>
         <br>
         <button type="submit">Gerar Bilhetes</button>
-
+        <button type="button" onclick="window.print()">Imprimir Bilhetes</button>
+        <br>
         <h2>Bilhetes Gerados:</h2>
-        <ul>
+        <div class="bilhetes-container">
 
             <?php
             function salvarImagem($campo)
@@ -145,35 +118,38 @@
                 $img3 = salvarImagem("imgpremio3");
 
                 for ($i = 1; $i <= $quantidade; $i++) {
-                    echo "<li>Bilhete #" . str_pad($i, 3, "0", STR_PAD_LEFT) . "</li>";
-                    echo "<li>Nome da Campanha: " . htmlspecialchars($_POST["nome"]) . "</li>";
+                    echo "<div class='bilhete'>";
+                    echo "<p><strong>Bilhete #" . str_pad($i, 3, "0", STR_PAD_LEFT) . "</strong></p>";
+                    echo "<p>Nome da Campanha: " . htmlspecialchars($_POST["nome"]) . "</p>";
 
                     // Prêmio 1
-                    echo "<li class='premio-com-imagem'><span>Prêmio 1: " . htmlspecialchars($_POST["premio1"]) . "</span>";
-                    if ($img1) echo "<img src='$img1' alt='Imagem Prêmio 1'>";
-                    echo "</li>";
+                    echo "<div class='premio-com-imagem'><span>Prêmio 1: " . htmlspecialchars($_POST["premio1"]) . "</span>";
+                    if ($img1)
+                        echo "<img src='$img1' alt='Imagem Prêmio 1'>";
+                    echo "</div>";
 
                     // Prêmio 2
                     if (!empty($_POST["premio2"])) {
-                        echo "<li class='premio-com-imagem'><span>Prêmio 2: " . htmlspecialchars($_POST["premio2"]) . "</span>";
-                        if ($img2) echo "<img src='$img2' alt='Imagem Prêmio 2'>";
-                        echo "</li>";
+                        echo "<div class='premio-com-imagem'><span>Prêmio 2: " . htmlspecialchars($_POST["premio2"]) . "</span>";
+                        if ($img2)
+                            echo "<img src='$img2' alt='Imagem Prêmio 2'>";
+                        echo "</div>";
                     }
 
-                    // Prêmio 3
                     if (!empty($_POST["premio3"])) {
-                        echo "<li class='premio-com-imagem'><span>Prêmio 3: " . htmlspecialchars($_POST["premio3"]) . "</span>";
-                        if ($img3) echo "<img src='$img3' alt='Imagem Prêmio 3'>";
-                        echo "</li>";
+                        echo "<div class='premio-com-imagem'><span>Prêmio 3: " . htmlspecialchars($_POST["premio3"]) . "</span>";
+                        if ($img3)
+                            echo "<img src='$img3' alt='Imagem Prêmio 3'>";
+                        echo "</div>";
                     }
 
-                    echo "<li>Valor da Rifa: R$ " . number_format($_POST["valor"], 2, ',', '.') . "</li>";
-                    echo "<hr>";
+                    echo "<p>Valor da Rifa: R$ " . number_format($_POST["valor"], 2, ',', '.') . "</p>";
+                    echo "</div>";
                 }
             }
             ?>
 
-        </ul>
+        </div>
     </form>
 </body>
 
